@@ -7,7 +7,7 @@ from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, C
 from database import init_db, add_user, get_user
 
 TOKEN = "8517362183:AAE5NEmb2QphoprzEQMeJ3dsdloIPcV2-0k"
-WEBAPP_URL = "https://your-railway-app-url.up.railway.app/index.html"
+WEBAPP_URL = "https://samialehegn7-stack.github.io/regl-pay-mini-app/"
 
 CHANNELS = [
     {"name": "ቻናል 1", "url": "https://t.me/ethiotech011", "id": "@channel_1_username", "forced": True},
