@@ -21,6 +21,12 @@
             flex: 1;
             padding-bottom: 80px;
         }
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
+        }
         .header-card {
             background: linear-gradient(135deg, #2a2a2a, #1e1e1e);
             border-radius: 16px;
@@ -49,10 +55,25 @@
             background-color: #f39c12;
             color: #121212;
             border: none;
-            padding: 10px 16px;
+            padding: 8px 14px;
             border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
+        }
+        .btn:disabled {
+            background-color: #333;
+            color: #777;
+            cursor: not-allowed;
+        }
+        .notice-box {
+            background-color: rgba(243, 156, 18, 0.1);
+            border: 1px solid #f39c12;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            color: #f39c12;
+            text-align: center;
         }
         .nav-bar {
             position: fixed;
@@ -71,6 +92,8 @@
             font-size: 12px;
             cursor: pointer;
             text-decoration: none;
+            background: none;
+            border: none;
         }
         .nav-item.active {
             color: #f39c12;
@@ -80,34 +103,90 @@
 <body>
 
     <div class="container">
-        <div class="header-card">
-            <div>የቀሪ ሂሳብዎ (Balance)</div>
-            <div class="balance" id="user-balance">0.00 ETB</div>
-            <div style="font-size: 14px; color: #aaa; margin-top: 8px;" id="user-name">Pro Member 🔶</div>
+        <!-- HOME PAGE -->
+        <div id="page-home" class="page active">
+            <div class="header-card">
+                <div>የቀሪ ሂሳብዎ (Balance)</div>
+                <div class="balance" id="user-balance">0.00 ETB</div>
+                <div style="font-size: 14px; color: #aaa; margin-top: 8px;">👑 (Pro Member)</div>
+            </div>
+
+            <div class="notice-box" id="limit-notice">
+                🔥 ማስታወቂያዎችን በመመልከት በቀን እስከ 10 ብር ማግኘት ይችላሉ!
+            </div>
+
+            <div class="card">
+                <div>
+                    <div style="font-weight: bold;">📺 ማስታወቂያ እይ</div>
+                    <div style="font-size: 12px; color: #aaa;" id="ads-counter-text">የተመለከቱት: 0/10</div>
+                </div>
+                <button class="btn" id="watch-btn" onclick="watchAd()">እይ (+1 ብር)</button>
+            </div>
+
+            <div class="card">
+                <div>
+                    <div style="font-weight: bold;">👥 ጓደኛ ጋብዝ</div>
+                    <div style="font-size: 12px; color: #aaa;">ሰዎችን በመጋበዝ 2 ብር ያግኙ</div>
+                </div>
+                <button class="btn" onclick="openReferral()">ሊንክ ውሰድ</button>
+            </div>
         </div>
 
-        <div class="card">
-            <div>
-                <div style="font-weight: bold;">📺 ማስታወቂያ እይ</div>
-                <div style="font-size: 12px; color: #aaa;">ማስታወቂያዎችን በማየት 1 ብር ያግኙ</div>
+        <!-- TASKS PAGE -->
+        <div id="page-tasks" class="page">
+            <h2>📋 የዕለት ተዕለት ስራዎች (Tasks)</h2>
+            <p style="font-size: 13px; color: #aaa;">ቻናሎችን በመቀላቀል እና ስራዎችን በማጠናቀቅ ተጨማሪ ቦነስ ይሰብስቡ።</p>
+            
+            <div class="card">
+                <div>
+                    <div style="font-weight: bold;">Ethio Tech 011</div>
+                    <div style="font-size: 12px; color: #aaa;">ቦነስ: +2.00 ETB</div>
+                </div>
+                <button class="btn" id="task-1" onclick="doTask('task_ch_1', 2.0, 'https://t.me/ethiotech011')">ሰርራለሁ</button>
             </div>
-            <button class="btn" onclick="watchAd()">እይ (+1 ብር)</button>
+
+            <div class="card">
+                <div>
+                    <div style="font-weight: bold;">Big Tech Sami</div>
+                    <div style="font-size: 12px; color: #aaa;">ቦነስ: +2.00 ETB</div>
+                </div>
+                <button class="btn" id="task-2" onclick="doTask('task_ch_2', 2.0, 'https://t.me/Big_Tech_sami')">ሰርራለሁ</button>
+            </div>
+
+            <div class="card">
+                <div>
+                    <div style="font-weight: bold;">Video Best Quality</div>
+                    <div style="font-size: 12px; color: #aaa;">ቦነስ: +2.00 ETB</div>
+                </div>
+                <button class="btn" id="task-3" onclick="doTask('task_ch_3', 2.0, 'https://t.me/videobestquality')">ሰርራለሁ</button>
+            </div>
+
+            <div class="card">
+                <div>
+                    <div style="font-weight: bold;">Ethio Free Inter</div>
+                    <div style="font-size: 12px; color: #aaa;">ቦነስ: +2.00 ETB</div>
+                </div>
+                <button class="btn" id="task-4" onclick="doTask('task_ch_4', 2.0, 'https://t.me/ETHIO_FREE_INTER')">ሰርራለሁ</button>
+            </div>
         </div>
 
-        <div class="card">
-            <div>
-                <div style="font-weight: bold;">👥 ጓደኛጋብዝ</div>
-                <div style="font-size: 12px; color: #aaa;">ሰዎችን በመጋበዝ 2 ብር ያግኙ</div>
+        <!-- PROFILE PAGE -->
+        <div id="page-profile" class="page">
+            <h2>⚙️ መገለጫ (Profile)</h2>
+            <div class="card">
+                <div>
+                    <div style="font-weight: bold;" id="profile-id">መለያ: ደህንነቱ የተጠበቀ</div>
+                    <div style="font-size: 12px; color: #aaa;">ሁኔታው: ፕሪሚየም አባል</div>
+                </div>
             </div>
-            <button class="btn" onclick="openReferral()">ሊንክ ውሰድ</button>
         </div>
     </div>
 
+    <!-- NAVIGATION BAR -->
     <div class="nav-bar">
-        <a class="nav-item active" href="#">🏠 Home</a>
-        <a class="nav-item" href="#" onclick="alert('Tasks ክፍት ነው።')">📋 Tasks</a>
-        <a class="nav-item" href="#" onclick="alert('Leaderboard በቅርቡ ይመጣል!')">🏆 Leaderboard</a>
-        <a class="nav-item" href="#" onclick="alert('Profile ክፍት ነው።')">⚙️ Profile</a>
+        <button class="nav-item active" onclick="switchPage('home', this)">🏠 Home</button>
+        <button class="nav-item" onclick="switchPage('tasks', this)">📋 Tasks</button>
+        <button class="nav-item" onclick="switchPage('profile', this)">⚙️ Profile</button>
     </div>
 
     <script>
@@ -115,22 +194,103 @@
         tg.expand();
 
         let user = tg.initDataUnsafe.user;
+        let currentBalance = 0.0;
+
         if (user) {
-            document.getElementById('user-name').innerText = user.first_name + " (Pro Member)";
+            document.getElementById('profile-id').innerText = `መለያ ID: ***${user.id.toString().slice(-3)}`;
         }
 
-        const ADSTERRA_URL = "https://your-adsterra-direct-link.com/xyz";
+        const ADSTERRA_URL = "https://www.profitableratecpmnetwork.com/e61qyxn3ya?key=082792f8dcc56b647c08e3e9ed8aa7e5";
+        
+        let dailyWatchedAds = localStorage.getItem('daily_ads_count') ? parseInt(localStorage.getItem('daily_ads_count')) : 0;
+        let completedTasks = JSON.parse(localStorage.getItem('completed_tasks') || '[]');
 
+        function updateUI() {
+            document.getElementById('ads-counter-text').innerText = `የተመለከቱት: ${dailyWatchedAds}/10`;
+            if (dailyWatchedAds >= 10) {
+                let btn = document.getElementById('watch-btn');
+                btn.innerText = "ገደብ አልቋል";
+                btn.disabled = true;
+                document.getElementById('limit-notice').innerText = "⚠️ የዛሬውን የ 10 ማስታወቂያዎች ገደብ ጨርሰዋል!";
+            }
+
+            completedTasks.forEach((taskId, index) => {
+                let taskNum = taskId.replace('task_ch_', '');
+                let tBtn = document.getElementById(`task-${taskNum}`);
+                if (tBtn) {
+                    tBtn.innerText = "ተጠናቋል";
+                    tBtn.disabled = true;
+                }
+            });
+        }
+
+        updateUI();
+
+        // 10 ሰከንድ የሚጠብቅ እና ማስታወቂያ የሚያሳይ ሲስተም (Anti-Cheat Timer)
         function watchAd() {
+            if (dailyWatchedAds >= 10) {
+                alert("የዛሬውን የ 10 ማስታወቂያዎች ገደብ ጨርሰዋል!");
+                return;
+            }
+
+            let btn = document.getElementById('watch-btn');
+            btn.disabled = true;
+
             window.open(ADSTERRA_URL, '_blank');
-            alert("ማስታወቂያውን ከጨረሱ በኋላ ወደ ቦቱ ይመለሱ!");
+
+            let timeLeft = 10; // 10 ሰከንድ ቆይታ
+            
+            let countdown = setInterval(() => {
+                btn.innerText = `እየተጠበቀ ነው... (${timeLeft}s)`;
+                timeLeft--;
+
+                if (timeLeft < 0) {
+                    clearInterval(countdown);
+                    
+                    dailyWatchedAds++;
+                    localStorage.setItem('daily_ads_count', dailyWatchedAds);
+                    currentBalance += 1.0;
+                    document.getElementById('user-balance').innerText = currentBalance.toFixed(2) + " ETB";
+                    
+                    btn.innerText = "እይ (+1 ብር)";
+                    btn.disabled = false;
+                    updateUI();
+                    
+                    alert("እናመሰግናለን! ማስታወቂያውን ሙሉውን ስለተመለከቱ 1 ብር ተጨምሯል።");
+                }
+            }, 1000);
+        }
+
+        function doTask(taskId, reward, link) {
+            if (completedTasks.includes(taskId)) {
+                alert("ይህንን ስራ ከዚህ ቀደም ሰርተውታል!");
+                return;
+            }
+            window.open(link, '_blank');
+            
+            setTimeout(() => {
+                completedTasks.push(taskId);
+                localStorage.setItem('completed_tasks', JSON.stringify(completedTasks));
+                currentBalance += reward;
+                document.getElementById('user-balance').innerText = currentBalance.toFixed(2) + " ETB";
+                updateUI();
+                alert(`በተሳካ ሁኔታ ስራውን አጠናቀዋል! +${reward} ብር ተሸልመዋል።`);
+            }, 2000);
         }
 
         function openReferral() {
             if (user) {
-                let refLink = `https://t.me/${tg.bot_username || 'reglpay_bot'}?start=${user.id}`;
+                let refLink = `https://t.me/ReglPayBot?start=${user.id}`;
                 prompt("የሪፈራል ሊንክዎ ይኸውና ኮፒ ያድርጉት:", refLink);
             }
+        }
+
+        function switchPage(pageName, element) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            
+            document.getElementById(`page-${pageName}`).classList.add('active');
+            element.classList.add('active');
         }
     </script>
 </body>
