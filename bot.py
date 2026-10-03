@@ -4,19 +4,20 @@ import sys
 from aiogram import Bot, Dispatcher, F
 from aiogram.filters import CommandStart
 from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery, WebAppInfo
-from database import init_db, add_user, get_user
+from database import init_db, add_user
 
 TOKEN = "8517362183:AAE5NEmb2QphoprzEQMeJ3dsdloIPcV2-0k"
-WEBAPP_URL = "https://samialehegn7-stack.github.io/regl-pay-mini-app/"
+WEBAPP_URL = "https://your-railway-app-url.up.railway.app/index.html"
 
+# እርስዎ የሰጡዋቸው 4ቱ ቻናሎች (ለማረጋገጫ የተዘጋጁ)
 CHANNELS = [
-    {"name": "ቻናል 1", "url": "https://t.me/ethiotech011", "id": "@channel_1_username", "forced": True},
-    {"name": "ቻናል 2", "url": "https://t.me/Big_Tech_sami", "id": "@channel_2_username", "forced": True},
-    {"name": "ቻናል 3", "url": "https://t.me/videobestquality", "id": "@channel_3_username", "forced": True},
-    {"name": "ቻናል 4", "url": "https://t.me/ETHIO_FREE_INTER", "id": "@channel_4_username", "forced": False}
+    {"name": "Ethio Tech 011", "url": "https://t.me/ethiotech011", "id": "@ethiotech011", "forced": True},
+    {"name": "Big Tech Sami", "url": "https://t.me/Big_Tech_sami", "id": "@Big_Tech_sami", "forced": True},
+    {"name": "Video Best Quality", "url": "https://t.me/videobestquality", "id": "@videobestquality", "forced": True},
+    {"name": "Ethio Free Inter", "url": "https://t.me/ETHIO_FREE_INTER", "id": "@ETHIO_FREE_INTER", "forced": True}
 ]
 
-PROOF_CHANNEL_ID = -1003774219402
+BOT_PROOF_CHANNEL_ID = -1003774219402
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
@@ -67,7 +68,7 @@ async def start_command(message: Message):
 
     await message.answer(
         f"👋 ሰላም <b>{message.from_user.first_name}</b> ወደ <b>Regl Pay</b> እንኳን በደህና መጡ!\n\n"
-        "ከታች ያለውን ቁልፍ በመንካት ሚኒ አፑን (Mini App) በመክፈት መስራት ይጀምሩ፦",
+        "ማስታወቂያዎችን እና ታስኮችን በማየት በቀን ከፍተኛ ገቢ ማግኘት ይችላሉ። ከታች ያለውን ቁልፍ በመንካት ሚኒ አፑን ይክፈቱ፦",
         reply_markup=main_menu(),
         parse_mode="HTML"
     )
