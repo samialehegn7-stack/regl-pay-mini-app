@@ -7,14 +7,14 @@ from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, C
 from database import init_db, add_user
 
 TOKEN = "8517362183:AAE5NEmb2QphoprzEQMeJ3dsdloIPcV2-0k"
-WEBAPP_URL = "https://your-railway-app-url.up.railway.app/index.html"
+WEBAPP_URL = "https://samialehegn7-stack.github.io/regl-pay-mini-app/"
 
 # እርስዎ የሰጡዋቸው 4ቱ ቻናሎች (ለማረጋገጫ የተዘጋጁ)
 CHANNELS = [
     {"name": "Ethio Tech 011", "url": "https://t.me/ethiotech011", "id": "@ethiotech011", "forced": True},
     {"name": "Big Tech Sami", "url": "https://t.me/Big_Tech_sami", "id": "@Big_Tech_sami", "forced": True},
     {"name": "Video Best Quality", "url": "https://t.me/videobestquality", "id": "@videobestquality", "forced": True},
-    {"name": "Ethio Free Inter", "url": "https://t.me/ETHIO_FREE_INTER", "id": "@ETHIO_FREE_INTER", "forced": True}
+    {"name": "Ethio Free Inter", "url": "https://t.me/ETHIO_FREE_INTER", "id": "@ETHIO_FREE_INTER", "forced": false}
 ]
 
 BOT_PROOF_CHANNEL_ID = -1003774219402
