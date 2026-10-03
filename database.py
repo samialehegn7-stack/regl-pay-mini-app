@@ -13,7 +13,8 @@ async def init_db():
                 daily_ads INTEGER DEFAULT 0,
                 last_ad_time REAL DEFAULT 0.0,
                 referrals_count INTEGER DEFAULT 0,
-                referred_by INTEGER
+                referred_by INTEGER,
+                tasks_completed TEXT DEFAULT ""
             )
         """)
         await db.commit()
@@ -44,35 +45,28 @@ async def add_user(user_id: int, referred_by: int = None):
 async def get_user(user_id: int):
     async with aiosqlite.connect(DB_NAME) as db:
         cursor = await db.execute(
-            "SELECT balance, ads_watched, daily_ads, last_ad_time, referrals_count FROM users WHERE user_id = ?", 
+            "SELECT balance, ads_watched, daily_ads, last_ad_time, referrals_count, tasks_completed FROM users WHERE user_id = ?", 
             (user_id,)
         )
         return await cursor.fetchone()
 
-async def check_and_reset_daily_ads(user_id: int):
+async def complete_task_db(user_id: int, task_id: str, reward: float):
     async with aiosqlite.connect(DB_NAME) as db:
-        cursor = await db.execute("SELECT daily_ads, last_ad_time FROM users WHERE user_id = ?", (user_id,))
+        cursor = await db.execute("SELECT balance, tasks_completed FROM users WHERE user_id = ?", (user_id,))
         row = await cursor.fetchone()
         if row:
-            daily_ads, last_ad_time = row
-            current_time = time.time()
-            if current_time - last_ad_time >= 86400:
-                await db.execute("UPDATE users SET daily_ads = 0 WHERE user_id = ?", (user_id,))
+            balance, tasks_completed = row
+            tasks_list = tasks_completed.split(",") if tasks_completed else []
+            
+            if task_id not in tasks_list:
+                tasks_list.append(task_id)
+                new_tasks_str = ",".join(tasks_list)
+                new_balance = balance + reward
+                
+                await db.execute(
+                    "UPDATE users SET balance = ?, tasks_completed = ? WHERE user_id = ?",
+                    (new_balance, new_tasks_str, user_id)
+                )
                 await db.commit()
-                return 0, last_ad_time
-            return daily_ads, last_ad_time
-        return 0, 0.0
-
-async def increment_ad(user_id: int):
-    current_time = time.time()
-    async with aiosqlite.connect(DB_NAME) as db:
-        await db.execute(
-            "UPDATE users SET balance = balance + 1.0, ads_watched = ads_watched + 1, daily_ads = daily_ads + 1, last_ad_time = ? WHERE user_id = ?", 
-            (current_time, user_id)
-        )
-        await db.commit()
-
-async def reset_balance(user_id: int):
-    async with aiosqlite.connect(DB_NAME) as db:
-        await db.execute("UPDATE users SET balance = 0.0, ads_watched = 0, referrals_count = 0 WHERE user_id = ?", (user_id,))
-        await db.commit()
+                return True
+        return False
